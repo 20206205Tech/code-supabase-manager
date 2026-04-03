@@ -1,0 +1,59 @@
+name: Supabase Deployment
+
+on:
+  # workflow_dispatch:
+  #   inputs:
+  #     environment:
+  #       description: "Chọn môi trường để deploy"
+  #       required: true
+  #       default: "dev"
+  #       type: choice
+  #       options:
+  #         - dev
+  #         - prd
+  push:
+    branches: [main]
+    paths: ["database/**"]
+  pull_request:
+    branches: [main]
+    paths: ["database/**"]
+
+jobs:
+  deploy:
+    name: Deploy to Supabase
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./database
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Doppler CLI
+        uses: dopplerhq/cli-action@v1
+
+      - uses: supabase/setup-cli@v1
+        with:
+          version: latest
+
+      - name: Deploy dựa trên Branch hoặc Input
+        run: |
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            CONFIG="${{ github.event.inputs.environment }}"
+          elif [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
+            CONFIG="prd"
+          else
+            CONFIG="dev"
+          fi
+
+          echo "CONFIG_SELECTED=$CONFIG" >> $GITHUB_ENV
+          echo "Đang sử dụng cấu hình: $CONFIG"
+
+      - name: Execute Supabase Commands
+        env:
+          DOPPLER_TOKEN: ${{ secrets.DOPPLER_TOKEN }}
+          CONFIG: ${{ env.CONFIG_SELECTED }}
+        run: |
+          doppler run -p 20206205tech -c $CONFIG -- supabase link --project-ref "$SUPABASE_PROJECT_ID"
+          doppler run -p 20206205tech -c $CONFIG -- supabase db push
+          doppler run -p 20206205tech -c $CONFIG -- supabase migration list
