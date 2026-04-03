@@ -1,0 +1,19 @@
+{
+  "name": "database",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "npx supabase start",
+    "stop": "npx supabase stop --no-backup && docker rm -f $(docker ps -a -q -f name=supabase)",
+    "info": "npx supabase status",
+    "dev": "npx supabase migration new 20206205tech",
+    "apply": "npx supabase db reset"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "supabase": "^2.72.3"
+  }
+}
