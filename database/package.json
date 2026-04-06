@@ -6,7 +6,7 @@
     "start": "npx supabase start",
     "stop": "npx supabase stop --no-backup && docker rm -f $(docker ps -a -q -f name=supabase)",
     "info": "npx supabase status",
-    "dev": "npx supabase migration new 20206205tech",
+    "new": "npx supabase migration new 20206205tech",
     "apply": "npx supabase db reset"
   },
   "keywords": [],
