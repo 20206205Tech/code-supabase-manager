@@ -44,6 +44,6 @@ jobs:
           DOPPLER_TOKEN: ${{ secrets.DOPPLER_TOKEN }}
           CONFIG: ${{ env.CONFIG_SELECTED }}
         run: |
-          doppler run -p 20206205tech -c $CONFIG -- supabase link --project-ref "$SUPABASE_PROJECT_ID"
-          doppler run -p 20206205tech -c $CONFIG -- supabase db push
-          doppler run -p 20206205tech -c $CONFIG -- supabase migration list
+          doppler run -p supabase -c $CONFIG -- supabase link --project-ref "$SUPABASE_PROJECT_ID"
+          doppler run -p supabase -c $CONFIG -- supabase db push
+          doppler run -p supabase -c $CONFIG -- supabase migration list
