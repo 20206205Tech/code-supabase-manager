@@ -1,16 +1,6 @@
 name: Supabase Deployment
 
 on:
-  # workflow_dispatch:
-  #   inputs:
-  #     environment:
-  #       description: "Chọn môi trường để deploy"
-  #       required: true
-  #       default: "dev"
-  #       type: choice
-  #       options:
-  #         - dev
-  #         - prd
   push:
     branches: [main]
     paths: ["database/**"]
